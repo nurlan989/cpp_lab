@@ -109,6 +109,24 @@ void displayLocation(const Latitude& lat, const Longitude& lon) {
    }
 }
 
+void OpenMap(const Latitude& lat, const Longitude& lon) {
+
+    std::string url =
+        "https://www.google.com/maps?q=" +
+        std::to_string(static_cast<double>(lat)) + "," +
+        std::to_string(static_cast<double>(lon));
+
+#ifdef __APPLE__
+    std::string command = "open \"" + url + "\"";
+#elif __linux__
+    std::string command = "xdg-open \"" + url + "\"";
+#elif _WIN32
+    std::string command = "start \"\" \"" + url + "\"";
+#endif
+
+    system(command.c_str());
+}
+
 int main() {
     Latitude lat;
     Longitude lon;
@@ -118,4 +136,5 @@ int main() {
     std::cout << "set longitude :";
     std::cin >> lon;
     displayLocation(lat, lon);
+    OpenMap(lat, lon);
 }
